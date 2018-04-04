@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(executables
+    ((names (redis_tls))
+     (public_names (redis-tls))
+     (modules (redis_tls))
+     (libraries (unix hiredis resp-server cmdliner))
+     (package redis-tls)))
