@@ -6,12 +6,13 @@
 
 open Lwt.Infix
 open Hiredis
+open Hiredis_value
 open Cmdliner
 
 module Data = struct
   type t = Hiredis.Pool.t
   type client = unit
-  let new_client () = ()
+  let new_client _t = ()
 end
 
 module Server = Resp_server.Make(Resp_server.Auth.String)(Data)
@@ -25,7 +26,7 @@ let default srv cli cmd args =
 let main addr port redis_addr redis_port tls_key tls_cert connections =
   let pool = Pool.create ~port:redis_port redis_addr connections in
   Server.create ~default ~host:addr (`TCP (`Port port)) pool >>=
-  Server.run
+  Server.start
 
 let server addr port redis_addr redis_port tls_key tls_cert connections =
   if tls_key = "" then
